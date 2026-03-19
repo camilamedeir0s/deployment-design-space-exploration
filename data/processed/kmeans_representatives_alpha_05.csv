@@ -1,0 +1,16 @@
+communication,contention,score,groups,communication_raw,contention_raw,config_str,cluster_kmeans,rep_kmeans
+0.1842105263157895,0.8241314762395463,0.5041710012776679,4,2.17,1.36078413746,ad_cart_checkout-currency-email-main-payment-productcat-recommendation_shipping,10,True
+0.294567062818336,0.7651358836434831,0.5298514732309095,5,3.469999999999999,1.26337217238,ad-recommendation_cart_checkout_currency-email-main-payment-productcat_shipping,6,True
+0.3964346349745331,0.736281831025248,0.5663582329998906,4,4.67,1.2157291224100002,ad-main-productcat-shipping_cart-checkout-currency_email-recommendation_payment,1,True
+0.4821731748726655,0.6640509581930455,0.5731120665328555,5,5.68,1.096463412,ad-recommendation_cart-email-shipping_checkout-currency_main-productcat_payment,4,True
+0.4677419354838709,0.7135143631324945,0.5906281493081826,4,5.509999999999999,1.17813608046,ad-recommendation_cart-checkout-shipping_currency_email-main-payment-productcat,12,True
+0.7266553480475384,0.7070011948790901,0.7168282714633143,3,8.560000000000002,1.16738170898,ad-currency-main-payment_cart-checkout-recommendation-shipping_email-productcat,11,True
+0.6561969439728353,0.7877807921640078,0.7219888680684216,4,7.729999999999999,1.30076284753,ad-cart-currency-main_checkout-productcat_email-payment-shipping_recommendation,2,True
+0.7945670628183364,0.6638806241168461,0.7292238434675913,5,9.360000000000005,1.09618216087,ad_cart-recommendation_checkout-email-shipping_currency-main-payment_productcat,7,True
+0.8480475382003397,0.6833574700809606,0.7657025041406502,4,9.990000000000002,1.1283418147600002,ad-main-recommendation-shipping_cart-email-payment_checkout_currency-productcat,5,True
+0.9202037351443128,0.6377319485448736,0.7789678418445931,3,10.840000000000003,1.05300615806,ad-checkout-payment_cart-currency-productcat-shipping_email-main-recommendation,0,True
+0.9906621392190156,0.5894010499625241,0.7900315945907699,6,11.670000000000003,0.9732034542,ad-cart-checkout_currency-recommendation_email_main_payment-productcat_shipping,3,True
+0.8302207130730053,0.7590173252963527,0.7946190191846789,5,9.78,1.25326937036,ad-cart-main-payment_checkout-productcat-recommendation_currency_email_shipping,13,True
+0.9864176570458408,0.6185113520324826,0.8024645045391616,5,11.620000000000005,1.0212696165,ad-checkout_cart-productcat_currency-email-payment_main-shipping_recommendation,8,True
+0.9015280135823432,0.7110953277341755,0.8063116706582594,4,10.62,1.17414183307,ad-email-main-payment-shipping_cart_checkout-currency_productcat-recommendation,9,True
+0.9821731748726658,0.6451167033285982,0.813644939100632,4,11.570000000000002,1.06519967021,ad_cart-currency-recommendation_checkout-payment-productcat_email-main-shipping,14,True
