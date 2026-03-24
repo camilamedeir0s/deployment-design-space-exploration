@@ -155,6 +155,9 @@ def exhaustive_to_csv(
         rows.append(metrics)
 
     df = pd.DataFrame(rows).sort_values("score", ascending=True).reset_index(drop=True)
+    df["rank"] = df.index + 1
+    cols = ["rank"] + [c for c in df.columns if c != "rank"]
+    df = df[cols]
     df.to_csv(out_csv, index=False)
     return df
 
