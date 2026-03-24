@@ -8,12 +8,26 @@ REPO_ROOT="$(cd "${K6_DIR}/../.." && pwd)"
 RUN_ONCE_SCRIPT="${SCRIPT_DIR}/run_k6_once.sh"
 
 # Adjust these paths to match your repository structure
-DEPLOYMENTS_DIR="${REPO_ROOT}/deployments/distributions"
-LATENCY_FILE="${REPO_ROOT}/infra/chaos-mesh/network-latency.yaml"
+DEPLOYMENTS_DIR="${REPO_ROOT}/experiments/deployments/kmeans_validation"
+LATENCY_FILE="${REPO_ROOT}/experiments/chaos-mesh/networkchaos.yaml"
 
 # Example configs; replace with yours
 CONFIGS=(
-  "colocated"
+  "ad-checkout-currency-email-main-payment-productcat-recommendation_cart_shipping"
+  "ad-currency-email-main-payment-productcat_cart-checkout-recommendation-shipping"
+  "ad-email_cart_checkout-currency-main-productcat_payment-shipping_recommendation"
+  "ad-checkout-payment_cart-main-productcat-shipping_currency_email-recommendation"
+  "ad-main-productcat_cart-checkout-email-shipping_currency-payment_recommendation"
+  "ad_cart-shipping_checkout-currency-email_main-payment-productcat_recommendation"
+  "ad-cart-currency-main_checkout_email-shipping_payment-productcat_recommendation"
+  "ad-currency-main-payment_cart-checkout-recommendation-shipping_email_productcat"
+  "ad-checkout-email_cart-productcat_currency-main-payment_recommendation-shipping"
+  "ad-checkout-email-main-recommendation-shipping_cart_currency_payment-productcat"
+  "ad-email-main-payment-shipping_cart-checkout_currency_productcat-recommendation"
+  "ad-main_cart_checkout-currency-payment-shipping_email-productcat_recommendation"
+  "ad-main-shipping_cart-payment_checkout_currency-recommendation_email_productcat"
+  "ad_cart_checkout_currency_email_main-shipping_payment_productcat_recommendation"
+  "ad-recommendation_cart-checkout_currency-productcat-shipping_email-payment_main"
 )
 
 LATENCIES=(
@@ -34,7 +48,7 @@ for CONFIG in "${CONFIGS[@]}"; do
     exit 1
   fi
 
-  kubectl apply -f "${CONFIG_PATH}"
+  kubectl apply -k "${CONFIG_PATH}"
   sleep 10
 
   for LAT in "${LATENCIES[@]}"; do
@@ -46,7 +60,7 @@ for CONFIG in "${CONFIGS[@]}"; do
       sleep 5
     fi
 
-    "${RUN_ONCE_SCRIPT}" "${CONFIG}"
+    bash "${RUN_ONCE_SCRIPT}" "${CONFIG}"
 
     if [ "${LAT}" != "0ms" ]; then
       kubectl delete -f "${LATENCY_FILE}" --ignore-not-found=true
@@ -54,7 +68,7 @@ for CONFIG in "${CONFIGS[@]}"; do
   done
 
   echo "Deleting configuration: ${CONFIG}"
-  kubectl delete -f "${CONFIG_PATH}" --ignore-not-found=true
+  kubectl delete -k "${CONFIG_PATH}" --ignore-not-found=true
 
   echo "Waiting for stabilization..."
   sleep 20

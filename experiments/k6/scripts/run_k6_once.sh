@@ -16,8 +16,12 @@ RESULTS_DIR="${K6_DIR}/results/${CONFIG_NAME}"
 
 mkdir -p "${RESULTS_DIR}"
 
-LATENCY="$(kubectl describe networkchaos network-emulation 2>/dev/null | grep 'Latency:' | head -n 1 | awk '{print $2}')"
-LATENCY="${LATENCY:-0ms}"
+if kubectl get networkchaos network-emulation >/dev/null 2>&1; then
+  LATENCY="$(kubectl describe networkchaos network-emulation 2>/dev/null | awk '/Latency:/ {print $2; exit}' || true)"
+  LATENCY="${LATENCY:-0ms}"
+else
+  LATENCY="0ms"
+fi
 
 ENDPOINT="$(kubectl get svc -o json | jq -r '
   .items[]
@@ -27,6 +31,7 @@ ENDPOINT="$(kubectl get svc -o json | jq -r '
 
 if [ -z "${ENDPOINT}" ]; then
   echo "Error: could not find the service endpoint."
+  echo "If you are using Minikube, did you run 'minikube tunnel' in another terminal?"
   exit 1
 fi
 
