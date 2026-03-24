@@ -9,7 +9,7 @@ The approach models a microservice application as a weighted service interaction
 - Communication (inter-service interaction across boundaries)
 - Contention (resource concentration within execution units)
 
-The workflow follows a fully reproducible pipeline, from data collection to structural analysis and pattern extraction.
+The workflow follows a reproducible pipeline aligned with the methodological structure described in the paper.
 
 ---
 
@@ -20,9 +20,6 @@ data/
   processed/            # Generated results (scores, Pareto, patterns)
 
 scripts/
-  compute_exhaustive_scores.py
-  generate_pareto.py
-  extract_structural_patterns.py
 
 experiments/
   k6/
@@ -35,18 +32,18 @@ experiments/
 
 ## Methodology Overview
 
-The methodology follows four main steps:
+The methodology follows six main steps:
 
-1. Profiling and Data Extraction  
-2. Exhaustive Configuration Scoring  
-3. Pareto Frontier Extraction  
-4. Structural Pattern Analysis  
-
-An optional fifth step performs runtime validation using sampled configurations.
+Profiling and Weight Extraction
+Architectural Model Definition
+Exhaustive Configuration Evaluation
+Structural Analysis (Score, Pareto, Knee)
+Structural Pattern Extraction
+(Optional) Runtime Validation
 
 ---
 
-## 1. Profiling and Data Extraction
+## 1. Profiling and Weight Extraction
 
 The structural model requires two inputs:
 
@@ -98,9 +95,29 @@ These values represent the structural resource demand of each service.
 
 ---
 
-## 2. Exhaustive Configuration Scoring
+## 2. Architectural Model Definition
 
-All possible deployment configurations (partitions of services) are evaluated.
+The application is modeled as a weighted directed graph:
+- Nodes represent services
+- Edges represent inter-service calls
+- Weights encode communication intensity and resource demand
+
+Two structural metrics are defined for each deployment configuration:
+
+- Communication: fraction of interaction crossing execution boundaries
+- Contention: maximum resource concentration within a group
+
+A composite score is defined as:
+```
+score(C) = α · communication(C) + (1 − α) · contention(C)
+```
+This model enables evaluating configurations analytically without executing them.
+
+---
+
+## 3. Exhaustive Configuration Evaluation
+
+All possible deployment configurations (service partitions) are evaluated.
 
 Run:
 
@@ -120,33 +137,36 @@ Each configuration contains:
 - communication
 - contention
 - score
-- position (global ranking)
+- rank
 - config_str (service grouping)
 
 ---
 
-## 3. Pareto Frontier Extraction
+## 4. Structural Analysis (Score, Pareto, Knee)
 
-Extract the non-dominated configurations in the (communication, contention) space.
+The configuration space is analyzed jointly using:
+
+- Score-based ordering
+- Pareto frontier (communication vs contention)
+- Knee-point detection
 
 Run:
-
 ```
 python scripts/generate_pareto.py
 ```
-
 ### Output
+
 ```
 data/processed/pareto_2d_alpha_05.csv
 ```
 
-This file contains the Pareto-efficient configurations used for structural analysis.
+This step identifies structurally efficient configurations and separates distinct trade-off regimes.
 
 ---
 
-## 4. Structural Pattern Extraction
+## 5. Structural Pattern Extraction
 
-Analyze recurring co-location patterns within different structural regimes.
+Patterns are extracted based on structural regimes defined in the previous step.
 
 Run:
 
@@ -155,18 +175,17 @@ python scripts/extract_structural_patterns.py
 ```
 
 ### Outputs
-
 Stored in `data/processed/`:
 
 - Heatmaps (images)
 - Co-location probability matrices (CSV)
 - Markdown report describing detected patterns
 
-This step identifies stable structural patterns, such as frequently co-located service groups.
+These patterns reveal recurring service groupings in different regions of the deployment space.
 
 ---
 
-## 5. (Optional) Runtime Validation via K-Means Sampling
+## 6. (Optional) Runtime Validation via K-Means Sampling
 
 To validate the structural model against runtime behavior, a subset of configurations can be selected using clustering.
 
@@ -190,6 +209,19 @@ Reuse k6 scenarios to evaluate:
 
 - P95 latency
 - Sensitivity under network delay
+
+⚠️ **Important (Minikube users)**:
+When running the full pipeline using:
+```
+./run_k6_pipeline.sh
+```
+
+You must execute the following command in a separate terminal:
+```
+minikube tunnel
+```
+
+This is required to expose LoadBalancer services and allow the test scripts to correctly reach the application endpoint.
 
 ---
 
