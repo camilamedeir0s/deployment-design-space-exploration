@@ -14,8 +14,8 @@ DEFAULT_CLUSTERS = 15
 
 # Repository root = parent of /scripts
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_INPUT = REPO_ROOT / "data/processed/exhaustive_configurations_alpha_05.csv"
-DEFAULT_OUTPUT = REPO_ROOT / "data/processed/kmeans_representatives_alpha_05.csv"
+DEFAULT_INPUT = REPO_ROOT / "data/processed/communication_contention_dataset.csv"
+DEFAULT_OUTPUT = REPO_ROOT / "data/processed/kmeans_representatives.csv"
 
 
 def validate_columns(df: pd.DataFrame) -> None:
