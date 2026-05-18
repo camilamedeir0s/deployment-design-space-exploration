@@ -1,6 +1,6 @@
 # Exploring the Deployment Design Space of Microservice Applications
 
-This repository contains the artifacts and scripts to reproduce the methodology presented in the ECSA 2026 submission:
+This repository contains the artifacts and scripts to reproduce the methodology presented in the ECSA 2026 paper:
 
 "Exploring the Deployment Design Space of Microservice Applications"
 
